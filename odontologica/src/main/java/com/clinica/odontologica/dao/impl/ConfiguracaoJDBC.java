@@ -1,4 +1,4 @@
-package dao.impl;
+package com.clinica.odontologica.dao.impl;
 
 
 import java.sql.Connection;
@@ -31,3 +31,6 @@ public class ConfiguracaoJDBC {
         return connection;
     }
 }
+
+
+

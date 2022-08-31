@@ -1,4 +1,4 @@
-package dao.impl;
+package com.clinica.odontologica.dao.impl;
 
 import java.sql.SQLException;
 import java.util.List;

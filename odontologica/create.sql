@@ -14,7 +14,13 @@ rg varchar(255),
 dataAlta date
 );
 
-
+CREATE TABLE IF NOT EXISTS consulta(
+id int auto_increment primary key,
+id_dentista int,
+id_paciente int,
+hora date,
+data date
+);
 
 
 

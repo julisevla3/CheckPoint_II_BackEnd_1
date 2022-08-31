@@ -1,4 +1,6 @@
-package model;
+package com.clinica.odontologica.model;
+
+import java.util.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,8 +12,16 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class Dentista {
+public class Paciente {
+    private int id;
     private String nome;
     private String sobrenome;
-    private String matricula;
+    private String endereco;
+    private String rg;
+    private Date dataAlta;
+
+
 }
+
+
+
