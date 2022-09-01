@@ -27,14 +27,13 @@ public class PacienteDAOH2 implements IDao<Paciente> {
                         " VALUES ('%s', '%s', '%s', '%s', '%s')", paciente.getNome(), paciente.getSobrenome(), paciente.getEndereco(),
                 paciente.getRg(), paciente.getDataAlta().getYear() + "-" + paciente.getDataAlta().getMonth() + "-" + paciente.getDataAlta().getDay());
         Connection connection = null;
-
         try {
             log.info("Salvando paciente: " + paciente.getNome());
             configuracaoJDBC = new ConfiguracaoJDBC();
             connection = configuracaoJDBC.getConnection();
-            Statement statement = connection.createStatement();
-            statement.execute(SQLInsert,Statement.RETURN_GENERATED_KEYS);
-            ResultSet resultSet = statement.getGeneratedKeys();
+            Statement stmt = connection.createStatement();
+            stmt.execute(SQLInsert,Statement.RETURN_GENERATED_KEYS);
+            ResultSet resultSet = stmt.getGeneratedKeys();
 
             if(resultSet.next()){
                 paciente.setId(resultSet.getInt(1));
@@ -50,39 +49,10 @@ public class PacienteDAOH2 implements IDao<Paciente> {
     }
 
     @Override
-    public List<Paciente> buscarTodos() throws SQLException {
-        List<Paciente> pacientes = new ArrayList();
-
-        String sql = String.format("SELECT id, nome, sobrenome, rg, dataAlta FROM paciente");
-        Connection connection = null;
-
-        try {
-            log.info("Buscando os pacientes");
-            configuracaoJDBC = new ConfiguracaoJDBC();
-            connection = configuracaoJDBC.getConnection();
-            Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
-
-            while(rs.next()) {
-                pacientes.add(new Paciente(rs.getInt(1), rs.getString(2), rs.getString(3),
-                        rs.getDate(4)));
-            }
-
-        }catch (Exception e) {
-            e.printStackTrace();
-            log.error("Erro ao tentar alterar dados do paciente");
-        }finally {
-            log.info("Fechando a conexão com o banco");
-            connection.close();
-        }
-    }
-
-
-
-    @Override
     public void alterar(Paciente paciente) throws SQLException {
-        String SQLUpdate = String.format("UPDATE paciente set nome, sobrenome, endereco, rg, dataAlta = '%s', '%s', '%s', '%s', '%s'" +
-                paciente.getNome(), paciente.getSobrenome(), paciente.getEndereco(), paciente.getRg(), paciente.getDataAlta());
+        String SQLUpdate = String.format("UPDATE paciente set nome = '%s', sobrenome = '%s', endereco = '%s', rg = '%s', dataAlta = '%s' + '%s' + '%s'" +
+                paciente.getNome(), paciente.getSobrenome(), paciente.getEndereco(), paciente.getRg(), paciente.getDataAlta().getYear() + "-" +
+                paciente.getDataAlta().getMonth() + "-" + paciente.getDataAlta().getDay());
         Connection connection = null;
 
         try {
@@ -103,7 +73,57 @@ public class PacienteDAOH2 implements IDao<Paciente> {
 
     @Override
     public Optional<Paciente> buscarPorId(int id) throws SQLException {
-        return Optional.empty();
+        log.debug("Abrindo uma conexão no banco");
+        Connection connection = null;
+        Statement stmt = null;
+        String query = String.format("SELECT * FROM paciente where id= %s ", id);
+        Paciente paciente = null;
+
+        try {
+            configuracaoJDBC = new ConfiguracaoJDBC();
+            connection = configuracaoJDBC.getConnection();
+            log.debug("Buscando paciente por id: " + id);
+            stmt = connection.createStatement();
+            ResultSet resultado = stmt.executeQuery(query);
+
+            while (resultado.next()){
+                paciente = criarObjetoPaciente(resultado);
+            }
+        }catch (SQLException throwables){
+            throwables.printStackTrace();
+        }finally {
+            log.debug("Fechando a conexão com o banco");
+            stmt.close();
+        }
+        return paciente != null ? Optional.of(paciente) : Optional.empty();
+    }
+
+    @Override
+    public List<Paciente> buscarTodos() throws SQLException {
+        log.debug("Abrindo uma conexão no banco");
+        Connection connection = null;
+        Statement stmt = null;
+        String query = "SELECT * FROM paciente";
+        List<Paciente> pacientes = new ArrayList<>();
+
+        try {
+            configuracaoJDBC = new ConfiguracaoJDBC();
+            connection = configuracaoJDBC.getConnection();
+            stmt = connection.createStatement();
+            ResultSet resultado = stmt.executeQuery(query);
+            log.debug("Buscando todos os pacientes cadastrados no DB");
+
+            while(resultado.next()){
+                pacientes.add(criarObjetoPaciente(resultado));
+            }
+
+        }catch (SQLException  throwables){
+            throwables.printStackTrace();
+        }finally {
+            log.debug("Fechando a conexão com o banco");
+            stmt.close();
+        }
+        return pacientes;
     }
 
     @Override
@@ -126,6 +146,18 @@ public class PacienteDAOH2 implements IDao<Paciente> {
             log.debug("Fechando conexão com o banco");
             connection.close();
         }
+
+    }
+
+    private Paciente criarObjetoPaciente(ResultSet resultSet) throws SQLException {
+        Integer id = resultSet.getInt("ID");
+        String nome = resultSet.getString("nome");
+        String sobrenome = resultSet.getString("sobrenome");
+        String endereco = resultSet.getString("endereco");
+        String rg = resultSet.getString("rg");
+        Date dataAlta = resultSet.getDate("dataAlta");
+
+        return new Paciente(id, nome, sobrenome, endereco, rg, dataAlta);
 
     }
 }
