@@ -8,25 +8,26 @@ public class ProdutoClienteControler {
     private PacienteCliente pacienteCliente = new PacienteCliente();
 
     @PatchMapping("/salvar")
-    public Paciente salvar ("RequestBody Paciente paciente "){
+    public Paciente salvar(@RequestBody Paciente paciente ){
         return pacienteCliente.salvar(paciente);
     }
 
 
-    @GetMapping Mapping("/todos")
+    @GetMapping ("/todos")
     public Paciente buscarTodos (@RequestBody Integer id ){
-        return pacienteCliente.salvar(paciente);
+        return pacienteCliente.buscarPorId(id);
     }
 
-    @PutMapping Mapping("/alterar")
+    @PutMapping ("/alterar")
     public Paciente alterar (@RequestBody Paciente paciente ){
+
         return pacienteCliente.alterar(paciente);
     }
 
 
-    @DeleteMapping Mapping("/excluir")
+    @DeleteMapping ("/excluir")
     public String excluir (@PathVariable Integer id){
-        return pacienteCliente.excluir(paciente);
+        return pacienteCliente.excluir(id);
     }
 
 }

@@ -5,7 +5,6 @@ import com.clinica.odontologica.dao.IDao;
 import com.clinica.odontologica.model.Dentista;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Configuration;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;

@@ -1,46 +1,39 @@
 package com;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonPropertyDescription;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
-import com.mashape.unirest.http.ObjectMapper;
-
-import java.io.Serializable;
-//import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class JSonUtil {
+
     public static String asJsonString(Object object){
         try{
             ObjectMapper objectMapper = getObjectMapper();
             objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-            objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+            objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS,false);
             return objectMapper.writeValueAsString(object);
-                    }catch (Exception e){
+        }catch(Exception e){
             throw new RuntimeException();
         }
 
+
     }
-    public static <T> T objectFromString(Class<T>)aClass, String value) throws JsonPropertyDescription{
-    return getObjectMapper().readValue(value, aclass);
+
+    public static <T> T objectFromString(Class<T> aClass, String value) throws JsonProcessingException{
+        return getObjectMapper().readValue(value,aClass);
     }
 
     public static ObjectMapper getObjectMapper(){
-    return new ObjectMapper().registerModule(new ParameterNamesModule())
-            .configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false)
-            .configure
-        @Override
-        public <T> T readValue(String s, Class<T> aClass) {
-            return null;
-        }
+        return new ObjectMapper().registerModule(new ParameterNamesModule())
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false)
+                .registerModule(new Jdk8Module())
+                .registerModule(new JavaTimeModule());
 
-        @Override
-        public String writeValue(Object o) {
-            return null;
-        }
     }
-    }
-
 
 }

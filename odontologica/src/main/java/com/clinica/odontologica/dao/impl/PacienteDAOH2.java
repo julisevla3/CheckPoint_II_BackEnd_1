@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Configuration;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,8 +51,33 @@ public class PacienteDAOH2 implements IDao<Paciente> {
 
     @Override
     public List<Paciente> buscarTodos() throws SQLException {
-        return null;
+        List<Paciente> pacientes = new ArrayList();
+
+        String sql = String.format("SELECT id, nome, sobrenome, rg, dataAlta FROM paciente");
+        Connection connection = null;
+
+        try {
+            log.info("Buscando os pacientes");
+            configuracaoJDBC = new ConfiguracaoJDBC();
+            connection = configuracaoJDBC.getConnection();
+            Statement stmt = connection.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+
+            while(rs.next()) {
+                pacientes.add(new Paciente(rs.getInt(1), rs.getString(2), rs.getString(3),
+                        rs.getDate(4)));
+            }
+
+        }catch (Exception e) {
+            e.printStackTrace();
+            log.error("Erro ao tentar alterar dados do paciente");
+        }finally {
+            log.info("Fechando a conexão com o banco");
+            connection.close();
+        }
     }
+
+
 
     @Override
     public void alterar(Paciente paciente) throws SQLException {

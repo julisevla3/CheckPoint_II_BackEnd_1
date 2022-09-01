@@ -4,91 +4,72 @@ package com;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-import java.security.PublicKey;
-
 public class PacienteCliente {
+
     public Paciente salvar(Paciente paciente){
-        HttpResponse<String> respose = null;
-        Paciente paciente1 = null
+        HttpResponse<String> response = null;
+        Paciente paciente1 = null;
 
         try{
-            //Vai pegar a url lá do Postman da outra aplicaçao backend
-            HttpResponse<String> response = Unirest.post("http://localhost:8080/paciente/salvar")
+            response = Unirest.post("http://localhost:8080/produto/salvar")//vai pegar a url lá do postman da outra aplicação BackEnd
+                    .header("Content-Type","application/json")//configurando o json
+                    .body(JSonUtil.asJsonString(paciente)).asString();//converti o meu objeto para json
+            paciente1 = JSonUtil.objectFromString(Paciente.class,response.getBody());
+            //vai fazer a conversão de json para o objeto, passo a classe e o que vai ser convertido
 
-                    //Configurando o meu json
-                    .header("Content-Type", "application/json")
-
-                    //Converteu o objeto para Json
-                    .body(JSonUtil.asJsonString(paciente)).asString();
-
-            //Faz a conversão de Json para objeto, passando a classe e o que vai ser convertido
-            paciente1 = JSonUtil.objectFromString(Paciente.class, respose.getBody);
-        }catch (Exception e){
+        }catch(Exception e){
             e.printStackTrace();
         }
         return paciente1;
     }
-    Public Paciente buscarPorId( Integer id){
 
-        public Paciente salvar(Paciente paciente)HttpResponse<String> response;
-        {
-            HttpResponse<String> respose = null;
-            Paciente paciente1 = null
+    public Paciente buscarPorId(Integer id){
+        HttpResponse<String> response = null;
+        Paciente produto1 = null;
 
-            try{
-                //Vai pegar a url lá do Postman da outra aplicaçao backend
-                response = Unirest.get("http://localhost:8080/paciente/todos").asString();
+        try{
+            response = Unirest.get("http://localhost:8080/produto/todos").asString();//vai pegar a url lá do postman da outra aplicação BackEnd
 
+            produto1 = JSonUtil.objectFromString(Paciente.class,response.getBody());
+            //vai fazer a conversão de json para o objeto, passo a classe e o que vai ser convertido
 
-
-                //Faz a conversão de Json para objeto, passando a classe e o que vai ser convertido
-                paciente1 = JSonUtil.objectFromString(Paciente.class, respose.getBody);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-            return paciente1;
-
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return produto1;
     }
 
-    public Paciente alterar (Paciente paciente){
-            public Paciente put(Paciente paciente){
-                HttpResponse<String> respose = null;
-                Paciente paciente1 = null
+    public Paciente alterar(Paciente produto){
+        HttpResponse<String> response = null;
+        Paciente produto1 = null;
 
-                try{
-                    //Vai pegar a url lá do Postman da outra aplicaçao backend
-                    response = Unirest.post("http://localhost:8080/paciente/alterar")
+        try{
+            response = Unirest.put("http://localhost:8080/produto/alterar")//vai pegar a url lá do postman da outra aplicação BackEnd
+                    .header("Content-Type","application/json")//configurando o json
+                    .body(JSonUtil.asJsonString(produto)).asString();//converti o meu objeto para json
+            produto1 = JSonUtil.objectFromString(Paciente.class,response.getBody());
+            //vai fazer a conversão de json para o objeto, passo a classe e o que vai ser convertido
 
-                            //Configurando o meu json
-                            .header("Content-Type", "application/json")
-
-                            //Converteu o objeto para Json
-                            .body(JSonUtil.asJsonString(paciente)).asString();
-
-                    //Faz a conversão de Json para objeto, passando a classe e o que vai ser convertido
-                    paciente1 = JSonUtil.objectFromString(Paciente.class, respose.getBody);
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                return paciente1;
-            }
+        }catch(Exception e){
+            e.printStackTrace();
         }
+        return produto1;
+    }
 
-        public Strign excluir (Integer id){
-            public Paciente salvar(Paciente paciente){
-                HttpResponse<String> respose = null;
-                Paciente paciente1 = null
+    public String excluir(Integer id){
+        HttpResponse<String> response = null;
+        Paciente produto1 = null;
 
-                try{
-                    //Vai pegar a url lá do Postman da outra aplicaçao backend
-                    response = Unirest.delete("http://localhost:8080/paciente/"+id).asString();
-
-
+        try{
+            response = Unirest.delete("http://localhost:8080/produto/"+id).asString();//vai pegar a url lá do postman da outra aplicação BackEnd
 
 
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                return response != null ? String.valueOf(response.getStatus(): null);
+
+        }catch(Exception e){
+            e.printStackTrace();
         }
+        return response != null ? String.valueOf(response.getStatus()): null;
+    }
+
+
 }
