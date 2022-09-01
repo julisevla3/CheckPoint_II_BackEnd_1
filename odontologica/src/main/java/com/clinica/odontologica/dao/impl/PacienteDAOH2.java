@@ -1,13 +1,13 @@
 package com.clinica.odontologica.dao.impl;
 
 
+import com.clinica.odontologica.dao.ConfiguracaoJDBC;
+import com.clinica.odontologica.dao.IDao;
 import com.clinica.odontologica.model.Paciente;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Configuration;
 
 import java.sql.*;
-import java.text.DateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +29,7 @@ public class PacienteDAOH2 implements IDao<Paciente> {
 
         try {
             log.info("Salvando paciente: " + paciente.getNome());
-            configuracaoJDBC = new ConfiguracaoJDBC("org.h2.Driver","jdbc:h2:~/odontologia","sa","");
+            configuracaoJDBC = new ConfiguracaoJDBC();
             connection = configuracaoJDBC.getConnection();
             Statement statement = connection.createStatement();
             statement.execute(SQLInsert,Statement.RETURN_GENERATED_KEYS);
@@ -61,8 +61,7 @@ public class PacienteDAOH2 implements IDao<Paciente> {
 
         try {
             log.info("Alterando os dados do paciente" + paciente.getId());
-            configuracaoJDBC = new ConfiguracaoJDBC("org.h2.Driver","jdbc:h2:~/odontologia;" +
-                    "INIT=RUNSCRIPT FROM 'create.sql'","sa","");
+            configuracaoJDBC = new ConfiguracaoJDBC();
             connection = configuracaoJDBC.getConnection();
             Statement stmt = connection.createStatement();
             stmt.execute(SQLUpdate);
@@ -89,8 +88,7 @@ public class PacienteDAOH2 implements IDao<Paciente> {
         String SQLDelete = String.format("DELETE FROM paciente where id = %s ", id);
 
         try {
-            configuracaoJDBC = new ConfiguracaoJDBC("org.h2.Driver","jdbc:h2:~/odontologia;" +
-                    "INIT=RUNSCRIPT FROM 'create.sql'","sa","");
+            configuracaoJDBC = new ConfiguracaoJDBC();
             connection = configuracaoJDBC.getConnection();
             log.debug("Excluindo paciente com id: " + id);
             stmt = connection.createStatement();

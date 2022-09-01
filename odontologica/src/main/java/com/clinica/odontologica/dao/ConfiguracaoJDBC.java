@@ -1,4 +1,4 @@
-package com.clinica.odontologica.dao.impl;
+package com.clinica.odontologica.dao;
 
 
 import java.sql.Connection;
@@ -11,11 +11,12 @@ public class ConfiguracaoJDBC {
     private String usuario;
     private String senha;
 
-    public ConfiguracaoJDBC(String jdbcDriver, String dbUrl, String usuario, String senha) {
-        this.jdbcDriver = jdbcDriver;
-        this.dbUrl = dbUrl;
-        this.usuario = usuario;
-        this.senha = senha;
+
+    public ConfiguracaoJDBC() {
+        this.jdbcDriver = "org.h2.Driver";
+        this.dbUrl = "jdbc:h2:~/test;DB_CLOSE_DELAY=-1;INIT=RUNSCRIPT FROM 'create.sql'";
+        this.usuario = "sa";
+        this.senha = "";
     }
 
     public Connection getConnection(){
