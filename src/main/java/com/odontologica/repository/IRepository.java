@@ -1,13 +1,10 @@
-package com.odontologica.clinica.dao;
-
-import com.odontologica.clinica.model.Dentista;
-import com.odontologica.clinica.model.Paciente;
+package com.odontologica.repository;
 
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-public interface IDao<T> {
+public interface IRepository<T> {
 
     T salvar(T t) throws SQLException;
 

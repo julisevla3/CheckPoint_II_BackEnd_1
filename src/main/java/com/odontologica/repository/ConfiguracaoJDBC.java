@@ -1,4 +1,4 @@
-package com.odontologica.clinica.dao;
+package com.odontologica.repository;
 
 import lombok.AllArgsConstructor;
 

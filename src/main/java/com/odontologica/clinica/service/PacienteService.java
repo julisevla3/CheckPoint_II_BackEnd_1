@@ -1,7 +1,7 @@
 package com.odontologica.clinica.service;
 
-import com.odontologica.clinica.dao.IDao;
-import com.odontologica.clinica.model.Paciente;
+import com.odontologica.repository.IRepository;
+import com.odontologica.clinica.entity.PacienteEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,21 +13,21 @@ import java.util.Optional;
 public class PacienteService {
 
     @Autowired
-    IDao<Paciente> pacienteDaoH2;
+    IRepository<PacienteEntity> pacienteDaoH2;
 
-    public Paciente salvar(Paciente paciente) throws SQLException {
-        return pacienteDaoH2.salvar(paciente);
+    public PacienteEntity salvar(PacienteEntity pacienteEntity) throws SQLException {
+        return pacienteDaoH2.salvar(pacienteEntity);
     }
 
-    public  void alterar(Paciente paciente) throws SQLException {
-        pacienteDaoH2.alterar(paciente);
+    public  void alterar(PacienteEntity pacienteEntity) throws SQLException {
+        pacienteDaoH2.alterar(pacienteEntity);
     }
 
-    public List<Paciente> buscarTodos() throws SQLException {
+    public List<PacienteEntity> buscarTodos() throws SQLException {
         return pacienteDaoH2.buscarTodos();
     }
 
-    public Optional<Paciente> buscarPorId(int id) throws SQLException {
+    public Optional<PacienteEntity> buscarPorId(int id) throws SQLException {
         return pacienteDaoH2.buscarPorId(id);
     }
 

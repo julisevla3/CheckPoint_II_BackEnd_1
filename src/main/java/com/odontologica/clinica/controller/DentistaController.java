@@ -1,7 +1,7 @@
 package com.odontologica.clinica.controller;
 
 
-import com.odontologica.clinica.model.Dentista;
+import com.odontologica.clinica.entity.DentistaEntity;
 import com.odontologica.clinica.service.DentistaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,24 +17,24 @@ public class DentistaController {
     DentistaService service;
 
     @PostMapping
-    public Dentista salvaDentista(@RequestBody Dentista dentista) throws SQLException {
-        return service.salvar(dentista);
+    public DentistaEntity salvaDentista(@RequestBody DentistaEntity dentistaEntity) throws SQLException {
+        return service.salvar(dentistaEntity);
     }
 
     @PutMapping
-    public void alterar(@RequestBody Dentista dentista) throws SQLException {
+    public void alterar(@RequestBody DentistaEntity dentistaEntity) throws SQLException {
         System.out.println();
-        service.alterar(dentista);
+        service.alterar(dentistaEntity);
     }
 
     @GetMapping
-    public List<Dentista> buscarTodos() throws SQLException {
+    public List<DentistaEntity> buscarTodos() throws SQLException {
         return service.buscarTodos();
     }
 
     @RequestMapping(value = "/buscarId")
-    public Dentista buscarPorId(@RequestParam("id") int id) throws SQLException {
-        return service.buscarPorId(id).isEmpty() ? new Dentista() : service.buscarPorId(id).get();
+    public DentistaEntity buscarPorId(@RequestParam("id") int id) throws SQLException {
+        return service.buscarPorId(id).isEmpty() ? new DentistaEntity() : service.buscarPorId(id).get();
     }
 
     @DeleteMapping

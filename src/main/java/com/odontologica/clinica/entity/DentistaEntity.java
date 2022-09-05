@@ -1,4 +1,4 @@
-package com.odontologica.clinica.model;
+package com.odontologica.clinica.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,7 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class Dentista {
+public class DentistaEntity {
 
     private int id;
     private String nome;

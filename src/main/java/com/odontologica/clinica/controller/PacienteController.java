@@ -1,6 +1,6 @@
 package com.odontologica.clinica.controller;
 
-import com.odontologica.clinica.model.Paciente;
+import com.odontologica.clinica.entity.PacienteEntity;
 import com.odontologica.clinica.service.PacienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,24 +16,24 @@ public class PacienteController {
     PacienteService service;
 
     @PostMapping
-    public Paciente salvaPaciente(@RequestBody Paciente paciente) throws SQLException {
-        return service.salvar(paciente);
+    public PacienteEntity salvaPaciente(@RequestBody PacienteEntity pacienteEntity) throws SQLException {
+        return service.salvar(pacienteEntity);
     }
 
     @PutMapping
-    public void alterar(@RequestBody Paciente paciente) throws SQLException {
+    public void alterar(@RequestBody PacienteEntity pacienteEntity) throws SQLException {
         System.out.println();
-        service.alterar(paciente);
+        service.alterar(pacienteEntity);
     }
 
     @GetMapping
-    public List<Paciente> buscarTodos() throws SQLException {
+    public List<PacienteEntity> buscarTodos() throws SQLException {
         return service.buscarTodos();
     }
 
     @RequestMapping(value = "/buscarId")
-    public Paciente buscarPorId(@RequestParam("id") int id) throws SQLException {
-        return service.buscarPorId(id).isEmpty() ? new Paciente() : service.buscarPorId(id).get();
+    public PacienteEntity buscarPorId(@RequestParam("id") int id) throws SQLException {
+        return service.buscarPorId(id).isEmpty() ? new PacienteEntity() : service.buscarPorId(id).get();
     }
 
 

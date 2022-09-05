@@ -1,8 +1,8 @@
-package com.odontologica.clinica.dao.impl;
+package com.odontologica.repository.impl;
 
-import com.odontologica.clinica.dao.ConfiguracaoJDBC;
-import com.odontologica.clinica.dao.IDao;
-import com.odontologica.clinica.model.Dentista;
+import com.odontologica.repository.ConfiguracaoJDBC;
+import com.odontologica.repository.IRepository;
+import com.odontologica.clinica.entity.DentistaEntity;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Configuration;
 
@@ -17,20 +17,20 @@ import java.util.Optional;
 import static org.apache.logging.log4j.LogManager.getLogger;
 
 @Configuration
-public class DentistaDAOH2 implements IDao<Dentista> {
+public class DentistaDAOH2 implements IRepository<DentistaEntity> {
 
     private ConfiguracaoJDBC configuracaoJDBC;
 
     final static Logger log = getLogger(DentistaDAOH2.class);
     @Override
-    public Dentista salvar(Dentista dentista) throws SQLException {
+    public DentistaEntity salvar(DentistaEntity dentistaEntity) throws SQLException {
         log.info("Abrindo conexão");
         String SQLInsert = String.format("INSERT INTO dentista (nome, sobrenome, matricula)"  +
-                        "VALUES ('%s', '%s', '%s')", dentista.getNome(), dentista.getSobrenome(), dentista.getMatricula());
+                        "VALUES ('%s', '%s', '%s')", dentistaEntity.getNome(), dentistaEntity.getSobrenome(), dentistaEntity.getMatricula());
         Connection connection = null;
 
         try {
-            log.info("Salvando dentista: " + dentista.getNome());
+            log.info("Salvando dentista: " + dentistaEntity.getNome());
             configuracaoJDBC = new ConfiguracaoJDBC();
             connection = configuracaoJDBC.getConnection();
             Statement stmt = connection.createStatement();
@@ -38,7 +38,7 @@ public class DentistaDAOH2 implements IDao<Dentista> {
             ResultSet resultSet = stmt.getGeneratedKeys();
 
             if(resultSet.next()){
-                dentista.setId(resultSet.getInt(1));
+                dentistaEntity.setId(resultSet.getInt(1));
             }
         }catch (SQLException e){
             e.printStackTrace();
@@ -47,18 +47,18 @@ public class DentistaDAOH2 implements IDao<Dentista> {
             log.info("Fechando a conexão");
             connection.close();
         }
-        return dentista;
+        return dentistaEntity;
     }
 
     @Override
-    public void alterar(Dentista dentista) throws SQLException {
+    public void alterar(DentistaEntity dentistaEntity) throws SQLException {
         String SQLUpdate = String.format("UPDATE dentista set nome = '%s', sobrenome = '%s', matricula = '%s' where id = '%s';",
-                dentista.getNome(), dentista.getSobrenome(), dentista.getMatricula(), dentista.getId());
+                dentistaEntity.getNome(), dentistaEntity.getSobrenome(), dentistaEntity.getMatricula(), dentistaEntity.getId());
 
         Connection connection = null;
 
         try {
-            log.info("Alterando os dados do dentista" + dentista.getId());
+            log.info("Alterando os dados do dentista" + dentistaEntity.getId());
             configuracaoJDBC = new ConfiguracaoJDBC();
             connection = configuracaoJDBC.getConnection();
             Statement stmt = connection.createStatement();
@@ -74,12 +74,12 @@ public class DentistaDAOH2 implements IDao<Dentista> {
     }
 
     @Override
-    public Optional<Dentista> buscarPorId(int id) throws SQLException {
+    public Optional<DentistaEntity> buscarPorId(int id) throws SQLException {
         log.debug("Abrindo uma conexão no banco");
         Connection connection = null;
         Statement stmt = null;
         String query = String.format("SELECT * FROM dentista where id= %s ", id);
-        Dentista dentista = null;
+        DentistaEntity dentistaEntity = null;
 
         try {
             configuracaoJDBC = new ConfiguracaoJDBC();
@@ -89,7 +89,7 @@ public class DentistaDAOH2 implements IDao<Dentista> {
             ResultSet resultado = stmt.executeQuery(query);
 
             while (resultado.next()){
-                dentista = criarObjetoDentista(resultado);
+                dentistaEntity = criarObjetoDentista(resultado);
             }
         }catch (SQLException throwables){
             throwables.printStackTrace();
@@ -97,16 +97,16 @@ public class DentistaDAOH2 implements IDao<Dentista> {
             log.debug("Fechando a conexão com o banco");
             stmt.close();
         }
-        return dentista != null ? Optional.of(dentista) : Optional.empty();
+        return dentistaEntity != null ? Optional.of(dentistaEntity) : Optional.empty();
     }
 
     @Override
-    public List<Dentista> buscarTodos() throws SQLException {
+    public List<DentistaEntity> buscarTodos() throws SQLException {
         log.debug("Abrindo uma conexão no banco");
         Connection connection = null;
         Statement stmt = null;
         String query = "SELECT * FROM dentista";
-        List<Dentista> dentistas = new ArrayList<>();
+        List<DentistaEntity> dentistaEntities = new ArrayList<>();
 
         try {
             configuracaoJDBC = new ConfiguracaoJDBC();
@@ -116,7 +116,7 @@ public class DentistaDAOH2 implements IDao<Dentista> {
             log.debug("Buscando todos os dentista cadastrados no DB");
 
             while(resultado.next()){
-                dentistas.add(criarObjetoDentista(resultado));
+                dentistaEntities.add(criarObjetoDentista(resultado));
             }
 
         }catch (SQLException  throwables){
@@ -125,7 +125,7 @@ public class DentistaDAOH2 implements IDao<Dentista> {
             log.debug("Fechando a conexão com o banco");
             stmt.close();
         }
-        return dentistas;
+        return dentistaEntities;
     }
 
     @Override
@@ -150,12 +150,12 @@ public class DentistaDAOH2 implements IDao<Dentista> {
         }
     }
 
-    private Dentista criarObjetoDentista(ResultSet resultSet) throws SQLException {
+    private DentistaEntity criarObjetoDentista(ResultSet resultSet) throws SQLException {
         Integer id = resultSet.getInt("ID");
         String nome = resultSet.getString("nome");
         String sobrenome = resultSet.getString("sobrenome");
         String matricula = resultSet.getString("matricula");
 
-        return new Dentista(id, nome, sobrenome, matricula);
+        return new DentistaEntity(id, nome, sobrenome, matricula);
     }
 }

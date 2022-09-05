@@ -1,9 +1,8 @@
-package com.odontologica.clinica.dao.impl;
+package com.odontologica.repository.impl;
 
-import com.odontologica.clinica.dao.ConfiguracaoJDBC;
-import com.odontologica.clinica.dao.IDao;
-import com.odontologica.clinica.model.Dentista;
-import com.odontologica.clinica.model.Paciente;
+import com.odontologica.repository.ConfiguracaoJDBC;
+import com.odontologica.repository.IRepository;
+import com.odontologica.clinica.entity.PacienteEntity;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Configuration;
 
@@ -19,21 +18,21 @@ import java.util.Optional;
 import static org.apache.logging.log4j.LogManager.getLogger;
 
 @Configuration
-public class PacienteDAOH2 implements IDao<Paciente> {
+public class PacienteDAOH2 implements IRepository<PacienteEntity> {
 
     private ConfiguracaoJDBC configuracaoJDBC;
 
     final static Logger log = getLogger(PacienteDAOH2.class);
     @Override
-    public Paciente salvar(Paciente paciente) throws SQLException {
+    public PacienteEntity salvar(PacienteEntity pacienteEntity) throws SQLException {
         log.info("Abrindo conexão");
         String SQLInsert = String.format("INSERT INTO paciente (nome, sobrenome, endereco, rg, dataAlta)"  +
-                        "VALUES ('%s', '%s', '%s', '%s', '%s')", paciente.getNome(), paciente.getSobrenome(), paciente.getEndereco(),
-                paciente.getRg(),  paciente.getDataAlta().getYear() + "-" + paciente.getDataAlta().getMonth() + "-" + paciente.getDataAlta().getDay());
+                        "VALUES ('%s', '%s', '%s', '%s', '%s')", pacienteEntity.getNome(), pacienteEntity.getSobrenome(), pacienteEntity.getEndereco(),
+                pacienteEntity.getRg(),  pacienteEntity.getDataAlta().getYear() + "-" + pacienteEntity.getDataAlta().getMonth() + "-" + pacienteEntity.getDataAlta().getDay());
         Connection connection = null;
 
         try {
-            log.info("Salvando paciente: " + paciente.getNome());
+            log.info("Salvando paciente: " + pacienteEntity.getNome());
             configuracaoJDBC = new ConfiguracaoJDBC();
             connection = configuracaoJDBC.getConnection();
             Statement stmt = connection.createStatement();
@@ -41,7 +40,7 @@ public class PacienteDAOH2 implements IDao<Paciente> {
             ResultSet resultSet = stmt.getGeneratedKeys();
 
             if(resultSet.next()){
-                paciente.setId(resultSet.getInt(1));
+                pacienteEntity.setId(resultSet.getInt(1));
             }
         }catch (SQLException e){
             e.printStackTrace();
@@ -50,17 +49,17 @@ public class PacienteDAOH2 implements IDao<Paciente> {
             log.info("Fechando a conexão");
             connection.close();
         }
-        return paciente;
+        return pacienteEntity;
     }
 
     @Override
-    public void alterar(Paciente paciente) throws SQLException {
+    public void alterar(PacienteEntity pacienteEntity) throws SQLException {
         String SQLUpdate = String.format("UPDATE paciente set nome = '%s', sobrenome = '%s', endereco = '%s', rg = '%s' where id = '%s';",
-                paciente.getNome(), paciente.getSobrenome(), paciente.getEndereco(), paciente.getRg(), paciente.getId());
+                pacienteEntity.getNome(), pacienteEntity.getSobrenome(), pacienteEntity.getEndereco(), pacienteEntity.getRg(), pacienteEntity.getId());
         Connection connection = null;
 
         try {
-            log.info("Alterando os dados do paciente" + paciente.getId());
+            log.info("Alterando os dados do paciente" + pacienteEntity.getId());
             configuracaoJDBC = new ConfiguracaoJDBC();
             connection = configuracaoJDBC.getConnection();
             Statement stmt = connection.createStatement();
@@ -76,12 +75,12 @@ public class PacienteDAOH2 implements IDao<Paciente> {
     }
 
     @Override
-    public Optional<Paciente> buscarPorId(int id) throws SQLException {
+    public Optional<PacienteEntity> buscarPorId(int id) throws SQLException {
         log.debug("Abrindo uma conexão no banco");
         Connection connection = null;
         Statement stmt = null;
         String query = String.format("SELECT * FROM paciente where id= %s ", id);
-        Paciente paciente = null;
+        PacienteEntity pacienteEntity = null;
 
         try {
             configuracaoJDBC = new ConfiguracaoJDBC();
@@ -91,7 +90,7 @@ public class PacienteDAOH2 implements IDao<Paciente> {
             ResultSet resultado = stmt.executeQuery(query);
 
             while (resultado.next()){
-                paciente = criarObjetoPaciente(resultado);
+                pacienteEntity = criarObjetoPaciente(resultado);
             }
         }catch (SQLException throwables){
             throwables.printStackTrace();
@@ -99,16 +98,16 @@ public class PacienteDAOH2 implements IDao<Paciente> {
             log.debug("Fechando a conexão com o banco");
             stmt.close();
         }
-        return paciente != null ? Optional.of(paciente) : Optional.empty();
+        return pacienteEntity != null ? Optional.of(pacienteEntity) : Optional.empty();
     }
 
     @Override
-    public List<Paciente> buscarTodos() throws SQLException {
+    public List<PacienteEntity> buscarTodos() throws SQLException {
         log.debug("Abrindo uma conexão no banco");
         Connection connection = null;
         Statement stmt = null;
         String query = "SELECT * FROM paciente";
-        List<Paciente> pacientes = new ArrayList<>();
+        List<PacienteEntity> pacienteEntities = new ArrayList<>();
 
         try {
             configuracaoJDBC = new ConfiguracaoJDBC();
@@ -118,7 +117,7 @@ public class PacienteDAOH2 implements IDao<Paciente> {
             log.debug("Buscando todos os pacientes cadastrados no DB");
 
             while(resultado.next()){
-                pacientes.add(criarObjetoPaciente(resultado));
+                pacienteEntities.add(criarObjetoPaciente(resultado));
             }
 
         }catch (SQLException  throwables){
@@ -127,7 +126,7 @@ public class PacienteDAOH2 implements IDao<Paciente> {
             log.debug("Fechando a conexão com o banco");
             stmt.close();
         }
-        return pacientes;
+        return pacienteEntities;
     }
 
     @Override
@@ -153,7 +152,7 @@ public class PacienteDAOH2 implements IDao<Paciente> {
 
     }
 
-    private Paciente criarObjetoPaciente(ResultSet resultSet) throws SQLException {
+    private PacienteEntity criarObjetoPaciente(ResultSet resultSet) throws SQLException {
         Integer id = resultSet.getInt("ID");
         String nome = resultSet.getString("nome");
         String sobrenome = resultSet.getString("sobrenome");
@@ -161,7 +160,7 @@ public class PacienteDAOH2 implements IDao<Paciente> {
         String rg = resultSet.getString("rg");
         Date dataAlta = resultSet.getDate("dataAlta");
 
-        return new Paciente(id, nome, sobrenome, endereco, rg, dataAlta);
+        return new PacienteEntity(id, nome, sobrenome, endereco, rg, dataAlta);
     }
 
 
