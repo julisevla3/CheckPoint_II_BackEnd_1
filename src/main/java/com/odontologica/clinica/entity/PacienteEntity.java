@@ -1,4 +1,4 @@
-package com.odontologica.clinica.model;
+package com.odontologica.clinica.entity;
 
 
 import lombok.AllArgsConstructor;
@@ -13,7 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class Paciente {
+public class PacienteEntity {
 
     private int id;
     private String nome;
