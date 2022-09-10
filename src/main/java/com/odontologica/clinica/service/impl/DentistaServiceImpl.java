@@ -20,7 +20,6 @@ public class DentistaServiceImpl implements IClinicaService<DentistaEntity> {
     }
 
     @Override
-    //Salvar dentista novo
     public DentistaEntity salvar(DentistaEntity dentistaEntity) throws SQLException {
         if(dentistaEntity != null) {
             return dentistaRepository.save(dentistaEntity);

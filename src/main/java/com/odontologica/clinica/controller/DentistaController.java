@@ -10,7 +10,6 @@ import java.util.Optional;
 
 @RestController
 public class DentistaController {
-
     private DentistaServiceImpl dentistaService;
 
     public DentistaController(DentistaServiceImpl dentistaService) {
