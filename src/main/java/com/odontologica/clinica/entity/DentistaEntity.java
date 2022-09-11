@@ -38,4 +38,3 @@ public class DentistaEntity {
     public DentistaEntity() {
     }
 }
-

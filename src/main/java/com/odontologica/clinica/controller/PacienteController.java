@@ -1,7 +1,6 @@
 package com.odontologica.clinica.controller;
 
 import com.odontologica.clinica.entity.PacienteEntity;
-import com.odontologica.clinica.service.IClinicaService;
 import com.odontologica.clinica.service.impl.PacienteServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
