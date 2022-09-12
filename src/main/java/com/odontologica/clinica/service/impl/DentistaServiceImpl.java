@@ -1,57 +1,47 @@
 package com.odontologica.clinica.service.impl;
 
-import com.odontologica.clinica.repository.IDentistaRepository;
+import com.odontologica.clinica.dto.DentistaDTO;
 import com.odontologica.clinica.entity.DentistaEntity;
-import com.odontologica.clinica.service.IClinicaService;
+import com.odontologica.clinica.service.IService;
+import com.odontologica.repository.IDentistaRepository;
+import com.odontologica.repository.IRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
-public class DentistaServiceImpl implements IClinicaService<DentistaEntity> {
+public class DentistaServiceImpl implements IService<DentistaEntity> {
 
-    private final IDentistaRepository dentistaRepository;
+    @Autowired
+    private IRepository<DentistaEntity> dentistaRepository;
 
-    public DentistaServiceImpl(IDentistaRepository dentistaRepository) {
-        this.dentistaRepository = dentistaRepository;
-    }
 
     @Override
     public DentistaEntity salvar(DentistaEntity dentistaEntity) throws SQLException {
-        if(dentistaEntity != null) {
-            return dentistaRepository.save(dentistaEntity);
-        }
-        return new DentistaEntity();
+        return this.dentistaRepository.salvar(dentistaEntity);
     }
 
     @Override
-    public String alterar(DentistaEntity dentistaEntity) throws SQLException {
-        if(dentistaEntity != null && dentistaRepository.findById(dentistaEntity.getId()).isPresent()){
-            dentistaRepository.saveAndFlush(dentistaEntity);
-            return "Dentista alterado com sucesso!";
-        }
-        return "Não foi possível alterar os dados";
+    public void alterar(DentistaEntity dentistaEntity) throws SQLException {
+        this.dentistaRepository.alterar(dentistaEntity);
     }
 
     @Override
-    public List<DentistaEntity> buscarTodos() throws SQLException{
-        return dentistaRepository.findAll();
+    public List<DentistaEntity> buscarTodos() throws SQLException {
+        return this.dentistaRepository.buscarTodos();
     }
 
     @Override
-    public Optional<DentistaEntity> buscarPorId(Long id) throws SQLException {
-        return dentistaRepository.findById(id);
+    public Optional<DentistaEntity> buscarPorId(int id) throws SQLException {
+        return this.dentistaRepository.buscarPorId(id);
     }
 
     @Override
-    public String excluir(Long id) throws SQLException {
-        if(dentistaRepository.findById(id).isPresent()){
-            dentistaRepository.deleteById(id);
-            return "Dentista deletado com sucesso!";
-        }
-        return "Dentista não encontrado!";
+    public void excluir(int id) throws SQLException {
+        this.dentistaRepository.excluir(id);
     }
 }

@@ -1,44 +1,45 @@
 package com.odontologica.clinica.controller;
 
+
 import com.odontologica.clinica.entity.DentistaEntity;
-import com.odontologica.clinica.service.impl.DentistaServiceImpl;
+import com.odontologica.clinica.service.DentistaService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
+@RequestMapping("/dentistas")
 public class DentistaController {
-    private DentistaServiceImpl dentistaService;
 
-    public DentistaController(DentistaServiceImpl dentistaService) {
-        this.dentistaService = dentistaService;
+    @Autowired
+    DentistaService service;
+
+    @PostMapping
+    public DentistaEntity salvaDentista(@RequestBody DentistaEntity dentistaEntity) throws SQLException {
+        return service.salvar(dentistaEntity);
     }
 
-    @PostMapping("/dentista/salvar")
-    public DentistaEntity salvarDentista(@RequestBody DentistaEntity dentistaEntity) throws SQLException {
-        return dentistaService.salvar(dentistaEntity);
+    @PutMapping
+    public void alterar(@RequestBody DentistaEntity dentistaEntity) throws SQLException {
+        System.out.println();
+        service.alterar(dentistaEntity);
     }
 
-    @PutMapping("/dentista/alterar")
-    public String alterarDentista(@RequestBody DentistaEntity dentistaEntity) throws SQLException {
-        return dentistaService.alterar(dentistaEntity);
-    }
-
-    @RequestMapping(value = "/dentistas", method = RequestMethod.GET, produces = "application/json")
+    @GetMapping
     public List<DentistaEntity> buscarTodos() throws SQLException {
-        return dentistaService.buscarTodos();
+        return service.buscarTodos();
     }
 
-    @GetMapping("/dentista/{id}")
-    public Optional<DentistaEntity> buscarPorId(@PathVariable Long id) throws SQLException {
-        return dentistaService.buscarPorId(id);
+    @RequestMapping(value = "/buscarId")
+    public DentistaEntity buscarPorId(@RequestParam("id") int id) throws SQLException {
+        return service.buscarPorId(id).isEmpty() ? new DentistaEntity() : service.buscarPorId(id).get();
     }
 
-    @DeleteMapping("/dentista/delete/{id}")
-    public String excluirDentista(@PathVariable Long id) throws SQLException {
-        return dentistaService.excluir(id);
+    @DeleteMapping
+    public void excluir(@RequestParam("id") int id) throws SQLException {
+        service.excluir(id);
     }
 
 }
