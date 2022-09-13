@@ -3,25 +3,27 @@ package com.odontologica.clinica.entity;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 @Getter
 @Setter
 
 @Entity
+@Table(name = "Paciente")
 public class PacienteEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "paciente_sequence",sequenceName = "paciente_sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "sequence_generator")
     private Long id;
     private String nome;
     private String sobrenome;
     private String endereco;
     private String rg;
     private Date dataAlta;
+
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    private DentistaEntity dentistaEntity;
 
     public PacienteEntity(Long id, String nome, String sobrenome, String endereco, String rg, Date dataAlta) {
         this.id = id;
