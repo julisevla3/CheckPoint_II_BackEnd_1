@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.sql.Time;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -19,17 +19,22 @@ public class ConsultasEntity {
     @Column(name = "id", nullable = false)
     private Long id;
     private Date dataConsulta;
-    private Time horaConsulta;
+    private LocalDateTime horaConsulta;
 
-    private List<ConsultasEntity> consultasEntityList;
+    public ConsultasEntity(Date dataConsulta, LocalDateTime horaConsulta) {
+        this.dataConsulta = dataConsulta;
+        this.horaConsulta = horaConsulta;
+    }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "dentista_id")
-    private DentistaEntity dentistaEntity;
+    //    private List<ConsultasEntity> consultasEntityList;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "paciente_id")
-    private PacienteEntity pacienteEntity;
+//    @ManyToMany(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "id_dentista")
+//    private DentistaEntity dentistaEntity;
+//
+//    @ManyToMany(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "id_paciente")
+//    private PacienteEntity pacienteEntity;
 
     public Long getId() {
         return id;

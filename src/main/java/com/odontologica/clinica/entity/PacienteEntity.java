@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -22,8 +23,11 @@ public class PacienteEntity {
     private String rg;
     private Date dataAlta;
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    private DentistaEntity dentistaEntity;
+    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JoinTable(name = "ConsultasEntity",
+        joinColumns = @JoinColumn(name = "id_paciente"), inverseJoinColumns = @JoinColumn(name = "id_dentista")
+    )
+    private Set<DentistaEntity> consultaDentista;
 
     public PacienteEntity(Long id, String nome, String sobrenome, String endereco, String rg, Date dataAlta) {
         this.id = id;

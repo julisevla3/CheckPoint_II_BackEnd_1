@@ -11,7 +11,6 @@ import java.util.Optional;
 
 @Service
 public class PacienteServiceImpl implements IClinicaService<PacienteEntity> {
-
     private final IPacienteRepository pacienteRepository;
 
     public PacienteServiceImpl(IPacienteRepository pacienteRepository) {

@@ -22,7 +22,7 @@ public class DentistaEntity {
     private String sobrenome;
     private String matricula;
 
-    @OneToMany(mappedBy = "dentistaEntity",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "consultaDentista",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<PacienteEntity> pacientes = new HashSet<PacienteEntity>();
 
 
