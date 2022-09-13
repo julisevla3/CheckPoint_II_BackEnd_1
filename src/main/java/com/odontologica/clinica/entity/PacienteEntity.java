@@ -16,6 +16,7 @@ public class PacienteEntity {
     @Id
     @SequenceGenerator(name = "paciente_sequence",sequenceName = "paciente_sequence")
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "sequence_generator")
+    @Column(name = "paciente_id")
     private Long id;
     private String nome;
     private String sobrenome;
@@ -23,11 +24,11 @@ public class PacienteEntity {
     private String rg;
     private Date dataAlta;
 
-    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    @JoinTable(name = "ConsultasEntity",
-        joinColumns = @JoinColumn(name = "id_paciente"), inverseJoinColumns = @JoinColumn(name = "id_dentista")
-    )
-    private Set<DentistaEntity> consultaDentista;
+//    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+//    @JoinTable(name = "ConsultasEntity",
+//        joinColumns = @JoinColumn(name = "id_paciente"), inverseJoinColumns = @JoinColumn(name = "id_dentista")
+//    )
+//    private Set<DentistaEntity> consultaDentista;
 
     public PacienteEntity(Long id, String nome, String sobrenome, String endereco, String rg, Date dataAlta) {
         this.id = id;

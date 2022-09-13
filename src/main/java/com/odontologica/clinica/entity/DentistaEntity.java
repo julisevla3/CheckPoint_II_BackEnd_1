@@ -17,13 +17,14 @@ public class DentistaEntity {
     @Id
     @SequenceGenerator(name = "dentista_sequence",sequenceName = "dentista_sequence")
     @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "sequence_generator")
+    @Column(name = "dentista_id")
     private Long id;
     private String nome;
     private String sobrenome;
     private String matricula;
 
-    @ManyToMany(mappedBy = "consultaDentista",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<PacienteEntity> pacientes = new HashSet<PacienteEntity>();
+//    @ManyToMany(mappedBy = "consultaDentista",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    private Set<PacienteEntity> pacientes = new HashSet<PacienteEntity>();
 
 
     public DentistaEntity(Long id, String nome, String sobrenome, String matricula) {
