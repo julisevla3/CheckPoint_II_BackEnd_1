@@ -11,7 +11,7 @@ import java.util.Date;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ConsultaDTO extends ConsultaRespostaDTO {
+public class ConsultaDTO {
 
     @JsonFormat(pattern="yyyy-MM-dd")
     private Date dataConsulta;

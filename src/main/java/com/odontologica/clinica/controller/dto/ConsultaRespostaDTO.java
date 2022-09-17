@@ -12,8 +12,9 @@ import java.util.Date;
 @NoArgsConstructor
 public class ConsultaRespostaDTO {
 
-    private Date dataconsulta;
+    private Date dataConsulta;
     private LocalDateTime horaConsulta;
-    private ConsultaDTO consulta;
+    private DentistaDTO dentista;
+    private PacienteDTO paciente;
 
 }

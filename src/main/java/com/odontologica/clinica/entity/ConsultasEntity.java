@@ -1,7 +1,8 @@
 package com.odontologica.clinica.entity;
 
-import com.odontologica.clinica.controller.dto.ConsultaDTO;
 import com.odontologica.clinica.controller.dto.ConsultaRespostaDTO;
+import com.odontologica.clinica.controller.dto.DentistaDTO;
+import com.odontologica.clinica.controller.dto.PacienteDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,15 +38,15 @@ public class ConsultasEntity {
         this.paciente = paciente;
     }
 
-    public ConsultaDTO dtoResposta(){
-        ConsultaDTO consulta = new ConsultaDTO(this.dtoResposta().getDataConsulta(), this.dtoResposta().getHoraConsulta(),
-                this.dtoResposta().getIdDentista(), this.dtoResposta().getIdPaciente());
+    public ConsultaRespostaDTO dtoResposta(){
+        DentistaDTO dentistaDTO = new DentistaDTO(this.dentista.getNome(), this.dentista.getSobrenome());
+        PacienteDTO pacienteDTO = new PacienteDTO(this.paciente.getNome(),this.paciente.getSobrenome());
 
-        return new ConsultaDTO(
+        return new ConsultaRespostaDTO(
                 this.dataConsulta,
                 this.horaConsulta,
-                consulta.getIdDentista(),
-                consulta.getIdPaciente()
+                dentistaDTO,
+                pacienteDTO
         );
 
     }
