@@ -6,6 +6,7 @@ import com.odontologica.clinica.entity.PacienteEntity;
 import com.odontologica.clinica.repository.IConsultasRepository;
 import com.odontologica.clinica.service.IClinicaService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -23,8 +24,10 @@ public class ConsultasServiceImpl implements IClinicaService<ConsultasEntity> {
     }
 
     @Override
+    @Transactional
     public ConsultasEntity salvar(ConsultasEntity consultasEntity) throws SQLException {
-        return null;
+        consultasRepository.save(consultasEntity);
+        return consultasEntity;
     }
 
     @Override

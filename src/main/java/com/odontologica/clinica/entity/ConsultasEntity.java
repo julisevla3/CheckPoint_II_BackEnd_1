@@ -1,42 +1,54 @@
 package com.odontologica.clinica.entity;
 
+import com.odontologica.clinica.controller.dto.ConsultaDTO;
+import com.odontologica.clinica.controller.dto.ConsultaRespostaDTO;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table(name = "Consultas")
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
 
 public class ConsultasEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
     private Date dataConsulta;
     private LocalDateTime horaConsulta;
 
-    public ConsultasEntity(Date dataConsulta, LocalDateTime horaConsulta) {
+    @ManyToOne
+    private DentistaEntity dentista;
+
+    @ManyToOne
+    private PacienteEntity paciente;
+
+    public ConsultasEntity(Date dataConsulta, LocalDateTime horaConsulta, DentistaEntity dentista, PacienteEntity paciente) {
         this.dataConsulta = dataConsulta;
         this.horaConsulta = horaConsulta;
+        this.dentista = dentista;
+        this.paciente = paciente;
     }
 
-    //    private List<ConsultasEntity> consultasEntityList;
+    public ConsultaDTO dtoResposta(){
+        ConsultaDTO consulta = new ConsultaDTO(this.dtoResposta().getDataConsulta(), this.dtoResposta().getHoraConsulta(),
+                this.dtoResposta().getIdDentista(), this.dtoResposta().getIdPaciente());
 
-//    @ManyToMany(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "id_dentista")
-//    private DentistaEntity dentistaEntity;
-//
-//    @ManyToMany(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "id_paciente")
-//    private PacienteEntity pacienteEntity;
+        return new ConsultaDTO(
+                this.dataConsulta,
+                this.horaConsulta,
+                consulta.getIdDentista(),
+                consulta.getIdPaciente()
+        );
 
-    public Long getId() {
-        return id;
     }
+
+
 }
