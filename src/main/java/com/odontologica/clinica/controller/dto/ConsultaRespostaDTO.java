@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -17,4 +18,6 @@ public class ConsultaRespostaDTO {
     private DentistaDTO dentista;
     private PacienteDTO paciente;
 
+    public ConsultaRespostaDTO(LocalDate dataConsulta, LocalDateTime horaConsulta, DentistaDTO dentistaDTO, PacienteDTO pacienteDTO) {
+    }
 }
