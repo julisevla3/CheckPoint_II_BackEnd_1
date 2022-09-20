@@ -1,6 +1,7 @@
 package com.odontologica.clinica.controller;
 
 import com.odontologica.clinica.entity.PacienteEntity;
+import com.odontologica.clinica.exceptions.ResourceNotFoundException;
 import com.odontologica.clinica.service.impl.PacienteServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -39,7 +40,11 @@ public class PacienteController {
     }
 
     @DeleteMapping("/paciente/delete/{id}")
-    public String excluir(@PathVariable Long id) throws SQLException {
-        return pacienteService.excluir(id);
+    public String excluir(@PathVariable Long id) throws SQLException, ResourceNotFoundException {
+        boolean excluiu = pacienteService.excluir(id);
+        if (excluiu) {
+            return "Paciente deletado";
+        }
+        throw new ResourceNotFoundException("Paciente nao encontrado");
     }
 }

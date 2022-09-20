@@ -14,5 +14,5 @@ public interface IClinicaService<T> {
 
     public Optional<T> buscarPorId(Long id) throws SQLException;
 
-    public String excluir(Long id) throws SQLException;
+    public boolean excluir(Long id) throws SQLException;
 }

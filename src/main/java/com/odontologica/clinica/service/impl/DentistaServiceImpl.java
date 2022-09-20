@@ -20,7 +20,7 @@ public class DentistaServiceImpl implements IClinicaService<DentistaEntity> {
     }
 
     @Override
-    public DentistaEntity salvar(DentistaEntity dentistaEntity) throws SQLException {
+    public DentistaEntity salvar(DentistaEntity dentistaEntity)  {
         if(dentistaEntity != null) {
             return dentistaRepository.save(dentistaEntity);
         }
@@ -28,7 +28,7 @@ public class DentistaServiceImpl implements IClinicaService<DentistaEntity> {
     }
 
     @Override
-    public String alterar(DentistaEntity dentistaEntity) throws SQLException {
+    public String alterar(DentistaEntity dentistaEntity)  {
         if(dentistaEntity != null && dentistaRepository.findById(dentistaEntity.getId()).isPresent()){
             dentistaRepository.saveAndFlush(dentistaEntity);
             return "Dentista alterado com sucesso!";
@@ -47,11 +47,11 @@ public class DentistaServiceImpl implements IClinicaService<DentistaEntity> {
     }
 
     @Override
-    public String excluir(Long id) throws SQLException {
+    public boolean excluir(Long id) throws SQLException {
         if(dentistaRepository.findById(id).isPresent()){
             dentistaRepository.deleteById(id);
-            return "Dentista deletado com sucesso!";
+            return  true; //"Dentista deletado com sucesso!";
         }
-        return "Dentista não encontrado!";
+        return false;//"Dentista não encontrado!";
     }
 }

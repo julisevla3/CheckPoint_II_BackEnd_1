@@ -4,8 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -22,9 +20,6 @@ public class DentistaEntity {
     private String nome;
     private String sobrenome;
     private String matricula;
-
-//    @ManyToMany(mappedBy = "consultaDentista",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    private Set<PacienteEntity> pacientes = new HashSet<PacienteEntity>();
 
 
     public DentistaEntity(Long id, String nome, String sobrenome, String matricula) {

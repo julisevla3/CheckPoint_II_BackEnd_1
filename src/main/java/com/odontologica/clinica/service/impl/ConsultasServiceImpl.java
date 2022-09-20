@@ -23,12 +23,12 @@ public class ConsultasServiceImpl implements IClinicaService<ConsultasEntity> {
     }
 
     @Override
-    public ConsultasEntity salvar(ConsultasEntity consultasEntity) throws SQLException {
+    public ConsultasEntity salvar(ConsultasEntity consultasEntity)  {
         return null;
     }
 
     @Override
-    public String alterar(ConsultasEntity consultasEntity) throws SQLException {
+    public String alterar(ConsultasEntity consultasEntity) {
         return null;
     }
 
@@ -43,7 +43,7 @@ public class ConsultasServiceImpl implements IClinicaService<ConsultasEntity> {
     }
 
     @Override
-    public String excluir(Long id) throws SQLException {
-        return null;
+    public boolean excluir(Long id) throws SQLException {
+        return false;
     }
 }

@@ -18,7 +18,7 @@ public class PacienteServiceImpl implements IClinicaService<PacienteEntity> {
     }
 
     @Override
-    public PacienteEntity salvar(PacienteEntity pacienteEntity) throws SQLException {
+    public PacienteEntity salvar(PacienteEntity pacienteEntity) {
         if(pacienteEntity != null) {
             return pacienteRepository.save(pacienteEntity);
         }
@@ -26,7 +26,7 @@ public class PacienteServiceImpl implements IClinicaService<PacienteEntity> {
     }
 
     @Override
-    public String alterar(PacienteEntity pacienteEntity) throws SQLException {
+    public String alterar(PacienteEntity pacienteEntity)  {
         if(pacienteEntity != null && pacienteRepository.findById(pacienteEntity.getId()).isPresent()){
             pacienteRepository.saveAndFlush(pacienteEntity);
             return "Paciente alterado com sucesso";
@@ -45,11 +45,11 @@ public class PacienteServiceImpl implements IClinicaService<PacienteEntity> {
     }
 
     @Override
-    public String excluir(Long id) throws SQLException {
+    public boolean excluir(Long id) throws SQLException {
         if(pacienteRepository.findById(id).isPresent()){
             pacienteRepository.deleteById(id);
-            return "Paciente deletado com sucesso!";
+            return true;//"Paciente deletado com sucesso!";
         }
-        return "Paciente não encontrado!";
+        return false; //"Paciente não encontrado!";
     }
 }
