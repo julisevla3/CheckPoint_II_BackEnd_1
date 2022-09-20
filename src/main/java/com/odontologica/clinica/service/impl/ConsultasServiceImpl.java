@@ -24,26 +24,37 @@ public class ConsultasServiceImpl implements IClinicaService<ConsultasEntity> {
 
     @Override
     public ConsultasEntity salvar(ConsultasEntity consultasEntity)  {
-        return null;
+        if(consultasEntity != null) {
+            return consultasRepository.save(consultasEntity);
+        }
+        return new ConsultasEntity();
     }
 
     @Override
     public String alterar(ConsultasEntity consultasEntity) {
-        return null;
+        if(consultasEntity != null && consultasRepository.findById(consultasEntity.getId()).isPresent()){
+            consultasRepository.saveAndFlush(consultasEntity);
+            return "Consulta alterado com sucesso!";
+        }
+        return "Não foi possível alterar os dados";
     }
 
     @Override
     public List<ConsultasEntity> buscarTodos() throws SQLException {
-        return null;
+        return consultasRepository.findAll();
     }
 
     @Override
     public Optional<ConsultasEntity> buscarPorId(Long id) throws SQLException {
-        return Optional.empty();
+        return consultasRepository.findById(id);
     }
 
     @Override
     public boolean excluir(Long id) throws SQLException {
-        return false;
+        if(consultasRepository.findById(id).isPresent()){
+            consultasRepository.deleteById(id);
+            return  true; //"Consulta deletada com sucesso!";
+        }
+        return false;//"Consulta não encontrada!";
     }
 }
