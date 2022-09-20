@@ -6,9 +6,9 @@ import java.util.Optional;
 
 public interface IClinicaService<T> {
 
-    public T salvar(T t) throws SQLException;
+    public T salvar(T t);
 
-    public String alterar(T t) throws SQLException;
+    public String alterar(T t);
 
     public List<T> buscarTodos() throws SQLException;
 

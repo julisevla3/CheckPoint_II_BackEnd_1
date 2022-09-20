@@ -1,7 +1,10 @@
 package com.odontologica.clinica.controller;
 
 import com.odontologica.clinica.entity.DentistaEntity;
+import com.odontologica.clinica.exceptions.BadRequestException;
+import com.odontologica.clinica.exceptions.ResourceNotFoundException;
 import com.odontologica.clinica.service.impl.DentistaServiceImpl;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
@@ -17,13 +20,17 @@ public class DentistaController {
     }
 
     @PostMapping("/dentista/salvar")
-    public DentistaEntity salvarDentista(@RequestBody DentistaEntity dentistaEntity) throws SQLException {
-        return dentistaService.salvar(dentistaEntity);
+    public ResponseEntity<DentistaEntity> salvarDentista(@RequestBody DentistaEntity dentistaEntity) throws BadRequestException {
+        try {
+            return ResponseEntity.ok(dentistaService.salvar(dentistaEntity));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @PutMapping("/dentista/alterar")
-    public String alterarDentista(@RequestBody DentistaEntity dentistaEntity) throws SQLException {
-        return dentistaService.alterar(dentistaEntity);
+    public ResponseEntity alterarDentista(@RequestBody DentistaEntity dentistaEntity) throws SQLException {
+        return ResponseEntity.ok(dentistaService.alterar(dentistaEntity));
     }
 
     @RequestMapping(value = "/dentistas", method = RequestMethod.GET, produces = "application/json")
@@ -32,13 +39,25 @@ public class DentistaController {
     }
 
     @GetMapping("/dentista/{id}")
-    public Optional<DentistaEntity> buscarPorId(@PathVariable Long id) throws SQLException {
-        return dentistaService.buscarPorId(id);
+    public ResponseEntity  <Optional<DentistaEntity>> buscarPorId(@PathVariable Long id) throws ResourceNotFoundException {
+        try {
+            return ResponseEntity.ok(dentistaService.buscarPorId(id));
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("Não foi encontrado o Dentista " + id);
+        }
     }
 
     @DeleteMapping("/dentista/delete/{id}")
-    public String excluirDentista(@PathVariable Long id) throws SQLException {
-        return dentistaService.excluir(id);
+    public ResponseEntity excluirDentista(@PathVariable Long id) throws ResourceNotFoundException {
+        try {
+
+            dentistaService.excluir(id);
+            return ResponseEntity.ok("Deletado");
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("Não foi encontrado o Dentista com o id: " + id);
+        }
     }
 
 }
+
+
