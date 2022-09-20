@@ -5,7 +5,6 @@ import com.odontologica.clinica.repository.IPacienteRepository;
 import com.odontologica.clinica.service.IClinicaService;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,7 +17,7 @@ public class PacienteServiceImpl implements IClinicaService<PacienteEntity> {
     }
 
     @Override
-    public PacienteEntity salvar(PacienteEntity pacienteEntity) throws SQLException {
+    public PacienteEntity salvar(PacienteEntity pacienteEntity) {
         if(pacienteEntity != null) {
             return pacienteRepository.save(pacienteEntity);
         }
@@ -26,30 +25,28 @@ public class PacienteServiceImpl implements IClinicaService<PacienteEntity> {
     }
 
     @Override
-    public String alterar(PacienteEntity pacienteEntity) throws SQLException {
+    public PacienteEntity alterar(PacienteEntity pacienteEntity) {
         if(pacienteEntity != null && pacienteRepository.findById(pacienteEntity.getId()).isPresent()){
-            pacienteRepository.saveAndFlush(pacienteEntity);
-            return "Paciente alterado com sucesso";
+            return pacienteRepository.saveAndFlush(pacienteEntity);
         }
-        return "Não foi possível alterar os dados";
+        return pacienteEntity;
     }
 
     @Override
-    public List<PacienteEntity> buscarTodos() throws SQLException {
+    public List<PacienteEntity> buscarTodos() {
         return pacienteRepository.findAll();
     }
 
     @Override
-    public Optional<PacienteEntity> buscarPorId(Long id) throws SQLException {
+    public Optional<PacienteEntity> buscarPorId(Long id){
         return pacienteRepository.findById(id);
     }
 
     @Override
-    public String excluir(Long id) throws SQLException {
-        if(pacienteRepository.findById(id).isPresent()){
+    public void excluir(Long id){
+        boolean excluiu = pacienteRepository.findById(id).isPresent();
+        if(excluiu = true){
             pacienteRepository.deleteById(id);
-            return "Paciente deletado com sucesso!";
         }
-        return "Paciente não encontrado!";
     }
 }

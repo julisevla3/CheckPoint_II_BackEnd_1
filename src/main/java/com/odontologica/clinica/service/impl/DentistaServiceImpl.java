@@ -3,10 +3,8 @@ package com.odontologica.clinica.service.impl;
 import com.odontologica.clinica.repository.IDentistaRepository;
 import com.odontologica.clinica.entity.DentistaEntity;
 import com.odontologica.clinica.service.IClinicaService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,7 +18,7 @@ public class DentistaServiceImpl implements IClinicaService<DentistaEntity> {
     }
 
     @Override
-    public DentistaEntity salvar(DentistaEntity dentistaEntity) throws SQLException {
+    public DentistaEntity salvar(DentistaEntity dentistaEntity) {
         if(dentistaEntity != null) {
             return dentistaRepository.save(dentistaEntity);
         }
@@ -28,30 +26,28 @@ public class DentistaServiceImpl implements IClinicaService<DentistaEntity> {
     }
 
     @Override
-    public String alterar(DentistaEntity dentistaEntity) throws SQLException {
+    public DentistaEntity alterar(DentistaEntity dentistaEntity) {
         if(dentistaEntity != null && dentistaRepository.findById(dentistaEntity.getId()).isPresent()){
-            dentistaRepository.saveAndFlush(dentistaEntity);
-            return "Dentista alterado com sucesso!";
+           return dentistaRepository.saveAndFlush(dentistaEntity);
         }
-        return "Não foi possível alterar os dados";
+       return dentistaEntity;
     }
 
     @Override
-    public List<DentistaEntity> buscarTodos() throws SQLException{
+    public List<DentistaEntity> buscarTodos() {
         return dentistaRepository.findAll();
     }
 
     @Override
-    public Optional<DentistaEntity> buscarPorId(Long id) throws SQLException {
+    public Optional<DentistaEntity> buscarPorId(Long id)  {
         return dentistaRepository.findById(id);
     }
 
     @Override
-    public String excluir(Long id) throws SQLException {
-        if(dentistaRepository.findById(id).isPresent()){
+    public void excluir(Long id)  {
+        boolean excluiu = dentistaRepository.findById(id).isPresent();
+        if(excluiu = true){
             dentistaRepository.deleteById(id);
-            return "Dentista deletado com sucesso!";
         }
-        return "Dentista não encontrado!";
     }
 }

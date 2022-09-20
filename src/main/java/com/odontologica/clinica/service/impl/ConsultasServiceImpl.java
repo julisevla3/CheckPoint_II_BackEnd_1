@@ -8,7 +8,6 @@ import com.odontologica.clinica.service.IClinicaService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,28 +24,27 @@ public class ConsultasServiceImpl implements IClinicaService<ConsultasEntity> {
 
     @Override
     @Transactional
-    public ConsultasEntity salvar(ConsultasEntity consultasEntity) throws SQLException {
+    public ConsultasEntity salvar(ConsultasEntity consultasEntity) {
         consultasRepository.save(consultasEntity);
         return consultasEntity;
     }
 
     @Override
-    public String alterar(ConsultasEntity consultasEntity) throws SQLException {
-        return null;
+    public ConsultasEntity alterar(ConsultasEntity consultasEntity) {
+        return consultasRepository.saveAndFlush(consultasEntity);
     }
 
     @Override
-    public List<ConsultasEntity> buscarTodos() throws SQLException {
-        return null;
+    public List<ConsultasEntity> buscarTodos() {
+        return consultasRepository.findAll();
     }
 
     @Override
-    public Optional<ConsultasEntity> buscarPorId(Long id) throws SQLException {
+    public Optional<ConsultasEntity> buscarPorId(Long id) {
         return Optional.empty();
     }
 
     @Override
-    public String excluir(Long id) throws SQLException {
-        return null;
+    public void excluir(Long id) {
     }
 }

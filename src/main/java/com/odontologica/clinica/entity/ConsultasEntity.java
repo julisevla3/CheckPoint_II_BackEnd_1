@@ -19,8 +19,9 @@ import java.util.Date;
 
 public class ConsultasEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @SequenceGenerator(name = "consulta_sequence", sequenceName = "consulta_sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "sequence_generator")
+//    @Column(name = "id", nullable = false)
     private Long id;
     private Date dataConsulta;
     private LocalDateTime horaConsulta;

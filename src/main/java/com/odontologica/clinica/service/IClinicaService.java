@@ -1,18 +1,17 @@
 package com.odontologica.clinica.service;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
 public interface IClinicaService<T> {
 
-    public T salvar(T t) throws SQLException;
+    public T salvar(T t);
 
-    public String alterar(T t) throws SQLException;
+    public T alterar(T t);
 
-    public List<T> buscarTodos() throws SQLException;
+    public List<T> buscarTodos();
 
-    public Optional<T> buscarPorId(Long id) throws SQLException;
+    public Optional<T> buscarPorId(Long id);
 
-    public String excluir(Long id) throws SQLException;
+    public void excluir(Long id);
 }
