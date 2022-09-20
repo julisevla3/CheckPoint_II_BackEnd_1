@@ -1,9 +1,10 @@
 package com.odontologica.clinica.controller;
 
 import com.odontologica.clinica.entity.PacienteEntity;
+import com.odontologica.clinica.exceptions.BadRequestException;
 import com.odontologica.clinica.exceptions.ResourceNotFoundException;
 import com.odontologica.clinica.service.impl.PacienteServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
@@ -20,13 +21,18 @@ public class PacienteController {
     }
 
     @PostMapping("/paciente/salvar")
-    public PacienteEntity salvaPaciente(@RequestBody PacienteEntity pacienteEntity) throws SQLException {
-        return pacienteService.salvar(pacienteEntity);
+    public ResponseEntity<PacienteEntity>salvaPaciente(@RequestBody PacienteEntity pacienteEntity) throws BadRequestException {
+        try{
+            return ResponseEntity.ok(pacienteService.salvar(pacienteEntity));
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+
     }
 
     @PutMapping("/paciente/alterar")
-    public String alterarPaciente(@RequestBody PacienteEntity pacienteEntity) throws SQLException {
-        return pacienteService.alterar(pacienteEntity);
+    public ResponseEntity alterarPaciente(@RequestBody PacienteEntity pacienteEntity) throws SQLException {
+        return ResponseEntity.ok(pacienteService.alterar(pacienteEntity));
     }
 
     @RequestMapping(value = "/pacientes", method = RequestMethod.GET, produces = "application/json")
@@ -35,15 +41,20 @@ public class PacienteController {
     }
 
     @GetMapping("/paciente/{id}")
-    public Optional<PacienteEntity> buscarPorId(@PathVariable Long id) throws SQLException {
-        return pacienteService.buscarPorId(id);
+    public ResponseEntity <Optional<PacienteEntity>> buscarPorId(@PathVariable Long id) throws ResourceNotFoundException {
+        try{
+            return ResponseEntity.ok(pacienteService.buscarPorId(id));
+
+        }catch (Exception e) {
+            throw new ResourceNotFoundException("Não foi encontrado o Paciente " + id);
+        }
     }
 
     @DeleteMapping("/paciente/delete/{id}")
-    public String excluir(@PathVariable Long id) throws SQLException, ResourceNotFoundException {
+    public ResponseEntity excluir(@PathVariable Long id) throws SQLException, ResourceNotFoundException {
         boolean excluiu = pacienteService.excluir(id);
         if (excluiu) {
-            return "Paciente deletado";
+            return ResponseEntity.ok("Deletado");
         }
         throw new ResourceNotFoundException("Paciente nao encontrado");
     }
