@@ -39,6 +39,7 @@ public class PacienteServiceImpl implements IClinicaService<PacienteEntity> {
 
     @Override
     public Optional<PacienteEntity> buscarPorId(Long id){
+
         return pacienteRepository.findById(id);
     }
 

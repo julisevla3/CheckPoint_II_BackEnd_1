@@ -1,16 +1,17 @@
 package com.odontologica.clinica.controller;
 
 import com.odontologica.clinica.entity.DentistaEntity;
+import com.odontologica.clinica.exceptions.BadRequestException;
 import com.odontologica.clinica.exceptions.ResourceNotFoundException;
 import com.odontologica.clinica.service.impl.DentistaServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("/dentista")
 public class DentistaController {
     private DentistaServiceImpl dentistaService;
 
@@ -18,31 +19,31 @@ public class DentistaController {
         this.dentistaService = dentistaService;
     }
 
-    @PostMapping("/dentista/salvar")
-    public ResponseEntity<DentistaEntity> salvarDentista(@RequestBody DentistaEntity dentistaEntity) throws ResourceNotFoundException{
+    @PostMapping("/salvar")
+    public ResponseEntity<DentistaEntity> salvarDentista(@RequestBody DentistaEntity dentistaEntity) throws BadRequestException {
         try {
             return ResponseEntity.ok(dentistaService.salvar(dentistaEntity));
-        }catch (Exception e) {
-            throw new ResourceNotFoundException("Não foi possível cadastrar um novo Dentista.");
+        } catch (Exception e) {
+            throw new BadRequestException("Não foi possível salvar dentista !");
         }
     }
 
-    @PutMapping("/dentista/alterar")
-    public ResponseEntity<DentistaEntity> alterarDentista(@RequestBody DentistaEntity dentistaEntity) throws ResourceNotFoundException{
+    @PutMapping("/alterar")
+    public ResponseEntity<DentistaEntity> alterarDentista(@RequestBody DentistaEntity dentistaEntity) throws BadRequestException{
         try {
             return ResponseEntity.ok(dentistaService.alterar(dentistaEntity));
         }catch (Exception e) {
-            throw new ResourceNotFoundException("Não foi possível alterar dentista.");
+            throw new BadRequestException("Não foi possível alterar dentista.");
         }
     }
 
-    @RequestMapping(value = "/dentistas", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "", method = RequestMethod.GET, produces = "application/json")
     public List<DentistaEntity> buscarTodos() {
 
         return dentistaService.buscarTodos();
     }
 
-    @GetMapping("/dentista/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Optional<DentistaEntity>> buscarPorId(@PathVariable Long id) throws ResourceNotFoundException {
         try {
             return ResponseEntity.ok(dentistaService.buscarPorId(id));

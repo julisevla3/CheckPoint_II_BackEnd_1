@@ -41,10 +41,14 @@ public class ConsultasServiceImpl implements IClinicaService<ConsultasEntity> {
 
     @Override
     public Optional<ConsultasEntity> buscarPorId(Long id) {
-        return Optional.empty();
+        return consultasRepository.findById(id);
     }
 
     @Override
     public void excluir(Long id) {
+        boolean excluiu = consultasRepository.findById(id).isPresent();
+        if(excluiu) {
+            consultasRepository.deleteById(id);
+        }
     }
 }

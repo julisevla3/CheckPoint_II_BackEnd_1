@@ -1,6 +1,7 @@
 package com.odontologica.clinica.controller;
 
 import com.odontologica.clinica.entity.PacienteEntity;
+import com.odontologica.clinica.exceptions.BadRequestException;
 import com.odontologica.clinica.exceptions.ResourceNotFoundException;
 import com.odontologica.clinica.service.impl.PacienteServiceImpl;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("/paciente")
 public class PacienteController {
     private PacienteServiceImpl pacienteService;
 
@@ -18,26 +20,26 @@ public class PacienteController {
         this.pacienteService = pacienteService;
     }
 
-    @PostMapping("/paciente/salvar")
-    public ResponseEntity<PacienteEntity> salvaPaciente(@RequestBody PacienteEntity pacienteEntity) throws ResourceNotFoundException {
+    @PostMapping("/salvar")
+    public ResponseEntity<PacienteEntity> salvaPaciente(@RequestBody PacienteEntity pacienteEntity) throws BadRequestException {
         try {
             return ResponseEntity.ok(pacienteService.salvar(pacienteEntity));
-        }catch (Exception e) {
-            throw new ResourceNotFoundException("Não foi possível cadastrar um novo paciente.");
 
+        }catch (Exception e) {
+            throw new BadRequestException("Não foi possível salvar paciente !");
         }
     }
 
-    @PutMapping("/paciente/alterar")
-    public ResponseEntity<PacienteEntity> alterarPaciente(@RequestBody PacienteEntity pacienteEntity) throws ResourceNotFoundException {
+    @PutMapping("/alterar")
+    public ResponseEntity<PacienteEntity> alterarPaciente(@RequestBody PacienteEntity pacienteEntity) throws BadRequestException {
         try {
             return ResponseEntity.ok(pacienteService.alterar(pacienteEntity));
         }catch (Exception e) {
-            throw new ResourceNotFoundException("Não foi possível alterar paciente.");
+            throw new BadRequestException("Não foi possível alterar paciente.");
         }
     }
 
-    @RequestMapping(value = "/pacientes", method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value = "", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<List<PacienteEntity>> buscarTodos() throws ResourceNotFoundException {
         try {
             return ResponseEntity.ok(pacienteService.buscarTodos());
@@ -46,7 +48,7 @@ public class PacienteController {
         }
     }
 
-    @GetMapping("/paciente/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Optional<PacienteEntity>> buscarPorId(@PathVariable Long id) throws ResourceNotFoundException {
         try {
             return ResponseEntity.ok(pacienteService.buscarPorId(id));
@@ -55,7 +57,7 @@ public class PacienteController {
         }
     }
 
-    @DeleteMapping("/paciente/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> excluir(@PathVariable Long id) throws ResourceNotFoundException {
         try {
             pacienteService.excluir(id);
