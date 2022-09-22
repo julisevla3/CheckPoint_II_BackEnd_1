@@ -1,4 +1,4 @@
-package com.odontologica.clinica.login;
+package com.login;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package com.odontologica.clinica.login;
+package com.login;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

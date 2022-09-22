@@ -1,4 +1,4 @@
-package com.odontologica.clinica.login;
+package com.login;
 
 public class SpringSegurancaApplication {
 }

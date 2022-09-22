@@ -1,4 +1,4 @@
-package com.odontologica.clinica.login;
+package com.login;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
