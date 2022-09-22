@@ -5,6 +5,7 @@ import com.odontologica.clinica.entity.DentistaEntity;
 import com.odontologica.clinica.entity.PacienteEntity;
 import com.odontologica.clinica.repository.IConsultasRepository;
 import com.odontologica.clinica.service.IClinicaService;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,7 +14,7 @@ import java.util.Optional;
 
 @Service
 public class ConsultasServiceImpl implements IClinicaService<ConsultasEntity> {
-
+    private static final Logger logger = Logger.getLogger(ConsultasServiceImpl.class);
     private final IConsultasRepository consultasRepository;
     private PacienteEntity pacienteEntity;
     private DentistaEntity dentistaEntity;
@@ -25,6 +26,7 @@ public class ConsultasServiceImpl implements IClinicaService<ConsultasEntity> {
     @Override
     @Transactional
     public ConsultasEntity salvar(ConsultasEntity consultasEntity) {
+//        logger.info("Salvando consulta");
         consultasRepository.save(consultasEntity);
         return consultasEntity;
     }
@@ -32,9 +34,11 @@ public class ConsultasServiceImpl implements IClinicaService<ConsultasEntity> {
     @Override
     public String alterar(ConsultasEntity consultasEntity) {
         if(consultasEntity != null && consultasRepository.findById(consultasEntity.getId()).isPresent()){
+//            logger.info("Alterando dados da consulta");
             consultasRepository.saveAndFlush(consultasEntity);
             return "Consulta alterado com sucesso!";
         }
+//        logger.error("Dados da consulta não foi alterado!");
         return "Não foi possível alterar os dados";
     }
 
