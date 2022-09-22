@@ -30,8 +30,12 @@ public class ConsultasServiceImpl implements IClinicaService<ConsultasEntity> {
     }
 
     @Override
-    public ConsultasEntity alterar(ConsultasEntity consultasEntity) {
-        return consultasRepository.saveAndFlush(consultasEntity);
+    public String alterar(ConsultasEntity consultasEntity) {
+        if(consultasEntity != null && consultasRepository.findById(consultasEntity.getId()).isPresent()){
+            consultasRepository.saveAndFlush(consultasEntity);
+            return "Consulta alterado com sucesso!";
+        }
+        return "Não foi possível alterar os dados";
     }
 
     @Override
@@ -47,7 +51,7 @@ public class ConsultasServiceImpl implements IClinicaService<ConsultasEntity> {
     @Override
     public void excluir(Long id) {
         boolean excluiu = consultasRepository.findById(id).isPresent();
-        if(excluiu) {
+        if(excluiu = true) {
             consultasRepository.deleteById(id);
         }
     }

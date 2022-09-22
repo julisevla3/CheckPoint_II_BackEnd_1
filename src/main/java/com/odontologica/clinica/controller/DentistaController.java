@@ -29,31 +29,29 @@ public class DentistaController {
     }
 
     @PutMapping("/alterar")
-    public ResponseEntity<DentistaEntity> alterarDentista(@RequestBody DentistaEntity dentistaEntity) throws BadRequestException{
-        try {
-            return ResponseEntity.ok(dentistaService.alterar(dentistaEntity));
-        }catch (Exception e) {
-            throw new BadRequestException("Não foi possível alterar dentista.");
-        }
+    public ResponseEntity<?> alterarDentista(@RequestBody DentistaEntity dentistaEntity) throws BadRequestException{
+        return ResponseEntity.ok(dentistaService.alterar(dentistaEntity));
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET, produces = "application/json")
     public List<DentistaEntity> buscarTodos() {
-
         return dentistaService.buscarTodos();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Optional<DentistaEntity>> buscarPorId(@PathVariable Long id) throws ResourceNotFoundException {
         try {
-            return ResponseEntity.ok(dentistaService.buscarPorId(id));
-        }catch (Exception e) {
-            throw new ResourceNotFoundException("Não foi encontrado dentista com id " + id);
+            Optional<DentistaEntity> dentistaEntity = dentistaService.buscarPorId(id);
+            if (dentistaEntity != null && dentistaEntity.isPresent()) {
+                return ResponseEntity.ok(dentistaEntity);
+            }
+            throw new ResourceNotFoundException("Não foi encontrado o Dentista " + id);
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("Erro ao buscar o dentista " + id);
         }
-
     }
 
-    @DeleteMapping("/dentista/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> excluirDentista(@PathVariable Long id) throws ResourceNotFoundException {
         try {
             dentistaService.excluir(id);

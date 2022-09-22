@@ -25,11 +25,12 @@ public class PacienteServiceImpl implements IClinicaService<PacienteEntity> {
     }
 
     @Override
-    public PacienteEntity alterar(PacienteEntity pacienteEntity) {
+    public String alterar(PacienteEntity pacienteEntity) {
         if(pacienteEntity != null && pacienteRepository.findById(pacienteEntity.getId()).isPresent()){
-            return pacienteRepository.saveAndFlush(pacienteEntity);
+            pacienteRepository.saveAndFlush(pacienteEntity);
+            return "Paciente alterado com sucesso";
         }
-        return pacienteEntity;
+        return "Não foi possível alterar os dados";
     }
 
     @Override
@@ -39,12 +40,11 @@ public class PacienteServiceImpl implements IClinicaService<PacienteEntity> {
 
     @Override
     public Optional<PacienteEntity> buscarPorId(Long id){
-
         return pacienteRepository.findById(id);
     }
 
     @Override
-    public void excluir(Long id){
+    public void excluir(Long id) {
         boolean excluiu = pacienteRepository.findById(id).isPresent();
         if(excluiu = true){
             pacienteRepository.deleteById(id);

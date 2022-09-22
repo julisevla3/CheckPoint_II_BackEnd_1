@@ -26,11 +26,12 @@ public class DentistaServiceImpl implements IClinicaService<DentistaEntity> {
     }
 
     @Override
-    public DentistaEntity alterar(DentistaEntity dentistaEntity) {
+    public String alterar(DentistaEntity dentistaEntity) {
         if(dentistaEntity != null && dentistaRepository.findById(dentistaEntity.getId()).isPresent()){
-           return dentistaRepository.saveAndFlush(dentistaEntity);
+           dentistaRepository.saveAndFlush(dentistaEntity);
+            return "Dentista alterado com sucesso";
         }
-       return dentistaEntity;
+        return "Não foi possível alterar os dados";
     }
 
     @Override

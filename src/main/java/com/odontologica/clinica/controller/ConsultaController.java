@@ -47,13 +47,8 @@ public class ConsultaController {
     }
 
     @PutMapping("/alterar")
-    public ResponseEntity<ConsultasEntity> alterarConsulta(@RequestBody ConsultasEntity consultasEntity) throws BadRequestException {
-        try {
-            return ResponseEntity.ok(consultasService.alterar(consultasEntity));
-        }catch (Exception e) {
-            throw new BadRequestException("Não foi possível alterar consulta.");
-        }
-
+    public ResponseEntity<?> alterarConsulta(@RequestBody ConsultasEntity consultasEntity) throws BadRequestException {
+        return ResponseEntity.ok(consultasService.alterar(consultasEntity));
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET, produces = "application/json")
@@ -63,10 +58,14 @@ public class ConsultaController {
 
     @GetMapping("/{id}")
     public ResponseEntity <Optional<ConsultasEntity>> buscarPorId(@PathVariable Long id) throws ResourceNotFoundException {
-        try{
-            return ResponseEntity.ok(consultasService.buscarPorId(id));
-        }catch (Exception e) {
-            throw new ResourceNotFoundException("Não foi localizado a Consulta " + id);
+        try {
+            Optional<ConsultasEntity> consultasEntity = consultasService.buscarPorId(id);
+            if (consultasEntity != null && consultasEntity.isPresent()) {
+                return ResponseEntity.ok(consultasEntity);
+            }
+            throw new ResourceNotFoundException("Não foi encontrado a consulta " + id);
+        } catch (Exception e) {
+            throw new ResourceNotFoundException("Erro ao buscar a consulta " + id);
         }
     }
 
@@ -78,11 +77,6 @@ public class ConsultaController {
         }catch (Exception e) {
             throw new ResourceNotFoundException("Não foi encontrado consulta com id " + id);
         }
-    }
-
-    @ExceptionHandler({ResourceNotFoundException.class})
-    public ResponseEntity<String> processarErrorNotFound(ResourceNotFoundException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage() );
     }
 
 }
