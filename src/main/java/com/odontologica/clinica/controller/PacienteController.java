@@ -42,13 +42,18 @@ public class PacienteController {
 
     @GetMapping("/paciente/{id}")
     public ResponseEntity <Optional<PacienteEntity>> buscarPorId(@PathVariable Long id) throws ResourceNotFoundException {
-        try{
-            return ResponseEntity.ok(pacienteService.buscarPorId(id));
-
-        }catch (Exception e) {
-            throw new ResourceNotFoundException("Não foi encontrado o Paciente " + id);
+        try {
+            Optional<PacienteEntity> pacienteEntity = pacienteService.buscarPorId(id);
+            if (pacienteEntity != null && pacienteEntity.isPresent()) {
+                return ResponseEntity.ok(pacienteEntity);
+            }
+            throw new ResourceNotFoundException("Não foi encontrado o Dentista " + id);
+        } catch (SQLException e) {
+            throw new ResourceNotFoundException("Erro ao buscar o dentista " + id);
         }
     }
+
+
 
     @DeleteMapping("/paciente/delete/{id}")
     public ResponseEntity excluir(@PathVariable Long id) throws SQLException, ResourceNotFoundException {

@@ -41,9 +41,13 @@ public class DentistaController {
     @GetMapping("/dentista/{id}")
     public ResponseEntity<Optional<DentistaEntity>> buscarPorId(@PathVariable Long id) throws ResourceNotFoundException {
         try {
-            return ResponseEntity.ok(dentistaService.buscarPorId(id));
-        } catch (Exception e) {
+            Optional<DentistaEntity> dentistaEntity = dentistaService.buscarPorId(id);
+            if (dentistaEntity != null && dentistaEntity.isPresent()) {
+                return ResponseEntity.ok(dentistaEntity);
+            }
             throw new ResourceNotFoundException("Não foi encontrado o Dentista " + id);
+        } catch (SQLException e) {
+            throw new ResourceNotFoundException("Erro ao buscar o dentista " + id);
         }
     }
 
