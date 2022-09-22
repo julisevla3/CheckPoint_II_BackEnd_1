@@ -1,4 +1,4 @@
-package com.login;
+package com.odontologica.clinica.login;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
