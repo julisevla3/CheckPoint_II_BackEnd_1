@@ -1,4 +1,4 @@
-package com.jwt;
+package com.odontologica.clinica.jwt;
 
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;

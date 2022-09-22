@@ -1,6 +1,8 @@
-package com.jwt;
+package com.odontologica.clinica.jwt;
 
-import com.model.AuthenticationRequest;
+
+import com.odontologica.clinica.model.AuthenticationRequest;
+import com.odontologica.clinica.model.AuthenticationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,7 +23,7 @@ public class HelloResource {
     @Autowired
     private UserDetailsService userDetailsService;
     @Autowired
-    private com.jwt.JwtUtil jwtUtil;
+    private JwtUtil jwtUtil;
 
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
@@ -34,7 +36,7 @@ public class HelloResource {
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
         final String jwt = jwtUtil.generateToken(userDetails);
 
-        return ResponseEntity.ok(new com.model.AuthenticationResponse((jwt)));
+        return ResponseEntity.ok(new AuthenticationResponse((jwt)));
     }
 
     @RequestMapping({"/hello"})

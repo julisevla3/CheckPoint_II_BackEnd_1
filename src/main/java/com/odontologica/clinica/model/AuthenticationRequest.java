@@ -1,4 +1,4 @@
-package com.model;
+package com.odontologica.clinica.model;
 
 public class AuthenticationRequest {
 
