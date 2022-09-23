@@ -1,4 +1,4 @@
-package com.odontologica.clinica.jwt;
+package jwt;
 
 
 import com.odontologica.clinica.model.AuthenticationRequest;
