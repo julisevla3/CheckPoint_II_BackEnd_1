@@ -14,7 +14,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/paciente")
 public class PacienteController {
-    private PacienteServiceImpl pacienteService;
+    private final PacienteServiceImpl pacienteService;
 
     public PacienteController(PacienteServiceImpl pacienteService) {
         this.pacienteService = pacienteService;
@@ -47,9 +47,9 @@ public class PacienteController {
             if (pacienteEntity != null && pacienteEntity.isPresent()) {
                 return ResponseEntity.ok(pacienteEntity);
             }
-            throw new ResourceNotFoundException("Não foi encontrado o dentista " + id);
+            throw new ResourceNotFoundException("Não foi encontrado o paciente " + id);
         } catch (Exception e) {
-            throw new ResourceNotFoundException("Erro ao buscar o dentista " + id);
+            throw new ResourceNotFoundException("Erro ao buscar o paciente " + id);
         }
     }
 

@@ -21,3 +21,4 @@ id_paciente int,
 hora date,
 data date
 );
+

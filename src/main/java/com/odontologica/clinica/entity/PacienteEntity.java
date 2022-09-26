@@ -25,6 +25,15 @@ public class PacienteEntity {
     private String rg;
     private Date dataAlta;
 
+    public PacienteEntity(Long id, String nome, String sobrenome, String endereco, String rg, Date dataAlta) {
+        this.id = id;
+        this.nome = nome;
+        this.sobrenome = sobrenome;
+        this.endereco = endereco;
+        this.rg = rg;
+        this.dataAlta = dataAlta;
+    }
+
     public PacienteEntity(String nome, String sobrenome, String endereco, String rg) {
         this.nome = nome;
         this.sobrenome = sobrenome;

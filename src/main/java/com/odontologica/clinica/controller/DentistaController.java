@@ -45,7 +45,7 @@ public class DentistaController {
             if (dentistaEntity != null && dentistaEntity.isPresent()) {
                 return ResponseEntity.ok(dentistaEntity);
             }
-            throw new ResourceNotFoundException("Não foi encontrado o Dentista " + id);
+            throw new ResourceNotFoundException("Não foi encontrado o dentista " + id);
         } catch (Exception e) {
             throw new ResourceNotFoundException("Erro ao buscar o dentista " + id);
         }
